@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BMI Calc</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+    <style>
+        .blue-text {
+      color: #5BBBE0;
+    }
+
+    .green-text {
+      color: #86BC25;
+    }
+
+    .orange-text {
+      color: #F18700;
+    }
+
+    .red-text {
+      color: #E73632;
+    }
+
+    .purple-text {
+      color: #B0358B;
+    }
+
+    .calc-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 940px;
+      margin: 0px auto;
+    }
+
+    .calc-form-wrapper {
+      flex-basis: 100%;
+      order: -1;
+      padding-left: 0px;
+      margin-bottom: 40px;
+    }
+
+    .calc-results-wrapper {
+      flex-basis: 100%;
+      order: -1;
+      padding-left: 0px;
+      margin-bottom: 40px;
+    }
+
+    .calc-disclaimer {
+      flex-basis: 100%;
+      font-size: 12px;
+    }
+
+    .calc-distributor {
+      display: flex;
+      justify-content: normal;
+      align-items: center;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .calc-label {
+      margin: 0;
+    }
+
+    .calc-radio-label {
+      margin: 0;
+      position: relative;
+      cursor: pointer;
+      padding-left: 25px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .calc-radio-label > input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .calc-radio-label > .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: white;
+      border: 1px solid #AFCA0B;
+      transition: border-width 0.3s ease;
+    }
+
+    .calc-radio-label:hover input ~ .checkmark, .calc-radio-label input:checked ~ .checkmark {
+      border-width: 2px;
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    .calc-radio-label input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    .calc-radio-label .checkmark:after {
+     	top: 3px;
+    	left: 3px;
+    	width: 10px;
+    	height: 10px;
+    	background: #AFCA0B;
+    }
+
+    .calc-select {
+    	display: block;
+    	font-size: 12px;
+    	font-family: sans-serif;
+    	color: #999;
+    	padding: .5em .8em;
+    	width: 100%;
+    	max-width: 100%;
+    	box-sizing: border-box;
+    	margin: 0;
+      margin-bottom: 10px;
+    	border: 2px solid #AFCA0B;
+      border-radius: 0px;
+    	-moz-appearance: none;
+    	-webkit-appearance: none;
+    	appearance: none;
+    	background-color: #fff;
+    	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    	background-repeat: no-repeat;
+    	background-position: right .7em top 50%;
+    	background-size: .65em auto;
+    }
+
+    .calc-select::-ms-expand {
+    	display: none;
+    }
+
+    .calc-select:hover {
+    	border-color: #AFCA0B;
+    }
+
+    .calc-select:focus {
+    	border-color: #AFCA0B;
+    	color: #222;
+    	outline: none;
+    }
+
+    .calc-select option {
+    	font-weight: normal;
+    }
+
+	.calc-floating-label {
+	    position: relative;
+	    width: auto;
+	    min-width: 80px;
+	    text-align: right;
+	    float: left;
+	    margin-right: 8px;
+	}
+
+    .calc-button {
+      line-height: 24px !important;
+      font-size: 18px !important;
+      color: white !important;
+      background-color: #AFCA0B !important;
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      border: none !important;
+    }
+
+    .calc-input {
+      border: 2px solid #AFCA0B !important;
+      border-radius: 0px !important;
+      flex: 1;
+      margin-right: 10px;
+      text-align: right;
+      width: 100%;
+      max-width: 160px;
+      min-height: 44px;
+    }
+
+    .calc-input-addon {
+      border: 2px solid #AFCA0B;
+      color: #AFCA0B;
+      min-width: 48px;
+      text-align: center;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .res-input {
+    min-width: 200px;
+}
+
+    .text-highlight {
+      color: #AFCA0B;
+      font-weight: bold;
+    }
+
+    .calc-estimate-sm {
+      padding-top: 60px;
+      padding-left: 10px;
+    }
+
+
+
+    .calc-result-text {
+      margin: 0;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    #gender-row,
+    #goal-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 75px;
+    width: 100%;
+    margin: 0px auto;
+}
+
+#metrics-distributions{
+	    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#persons-distribution {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.subtitle-metric{
+	display: block;
+	clear: both;
+	margin:  0px auto;
+	text-align: center;
+	width: 100%;
+}
+
+#af-row {
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.results-wrapper .calc-distributor span.calc-floating-label {
+    text-align: right;
+        min-width: 165px;
+    margin-right: 8px;
+}
+
+input.calc-button:disabled{
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+
+    #p-male.active{background: url(https://dietamx.com/wp-content/uploads/2020/12/male-filled.png) no-repeat 0px 0px / contain;}
+
+    #p-female.active{background: url(https://dietamx.com/wp-content/uploads/2020/12/female-filled.png) no-repeat 0px 0px / contain;}
+
+    #p-pregnant.active{background: url(https://dietamx.com/wp-content/uploads/2020/12/pregnant-filled.png) no-repeat 0px 0px / contain;}
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Display principal -->
+        <div class="row">
+            <div class="col-12 col-md-12 nopadding">
+                <img src="https://dietamx.com/wp-content/uploads/2020/12/top-banner-calculadora-get.jpg" alt="calculadora" class="img-fluid">
+            </div>
+        </div>
+        <!-- Parte de abajo -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center" style="margin-bottom: 40px;">Calcula tu gasto energético total</h3>
+            </div>
+        </div>
+        <div class="calc-wrapper">
+            <form class="calc-form-wrapper">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="calc-distributor" id="gender-row">
+                            <label for="male" class="calc-radio-label"> Hombre
+                                <input id="male" class="gender-opt" type="radio" name="genderopt" value="male">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label for="female" class="calc-radio-label"> Mujer
+                                <input id="female" class="gender-opt" type="radio" name="genderopt" value="female">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label for="pregnant" class="calc-radio-label">Embarazada
+                                <input id="pregnant" class="gender-opt" type="radio" name="genderopt" value="pregnant">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="calc-distributor" id="goal-row">
+                            <label for="lossweight" class="calc-radio-label">Pérdida de peso
+                                <input id="lossweight" class="checkpoint" type="radio" name="checkpoint" value="loss">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label for="gainmass" class="calc-radio-label">Incremento de masa
+                                <input id="gainmass" class="checkpoint" type="radio" name="checkpoint" value="gain">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="metrics-distributions">
+                    <div class="col-sm-12 col-md-5 col-lg-5">
+                        <div class="row-distributor" id="metrics-row">
+                            <p class="subtitle-metric">GBE</p>
+                            <div class="calc-distributor">
+                                <span class="calc-floating-label">Estatura</span>
+                                <input type="text" id="height" name="height" class="calc-input">
+                                <span class="calc-input-addon">cm</span>
+                            </div>
+                            <div class="calc-distributor">
+                                <span class="calc-floating-label">Peso</span>
+                                <input type="text" id="weight" name="weight" class="calc-input">
+                                <span class="calc-input-addon">kg</span>
+                            </div>
+                            <div class="calc-distributor">
+                                <span class="calc-floating-label">Edad</span>
+                                <input type="text" id="age" name="age" class="calc-input">
+                                <span class="calc-input-addon">años</span>
+                            </div>
+                        </div>
+                        <div class="row-distributor">
+                            <p class="subtitle-metric">AF</p>
+                            <div class="calc-distributor" id="af-row">
+                                <label for="10" class="calc-radio-label">
+                                    <input id="10" class="af-opt" type="radio" name="af-opt" value="10">
+                                    <span class="checkmark"></span>
+                                    .10
+                                </label>
+                                <label for="15" class="calc-radio-label">
+                                    <input id="15" class="af-opt" type="radio" name="af-opt" value="15">
+                                    <span class="checkmark"></span>
+                                    .15
+                                </label>
+                                <label for="20" class="calc-radio-label">
+                                    <input id="20" class="af-opt" type="radio" name="af-opt" value="20">
+                                    <span class="checkmark"></span>
+                                    .20
+                                </label>
+                            </div>
+                        </div>
+                        <input type="button" onclick="Calculate()" value="Calcular" class="calc-button" disabled>
+                        <div class="results-wrapper">
+                            <div class="row-distributor">
+                                <p class="subtitle-metric">ETA</p>
+                                <div class="calc-distributor" id="eta-row">
+                                    <span class="calc-floating-label">Resultado</span>
+                                    <input type="text" readonly="" id="eta" class="res-input calc-input">
+                                </div>
+                                <div class="calc-distributor" id="get-row">
+                                    <span class="calc-floating-label">Gasto enérgetico total (GET)</span>
+                                    <input type="text" readonly="" id="GETVal" class="res-input calc-input">
+                                    <span class="calc-input-addon">kcal</span>
+                                </div>
+                                <div class="calc-distributor" id="calories-row">
+                                    <span class="calc-floating-label">Consumo de proteína recomendada</span>
+                                    <input type="text" readonly="" id="FoodVal" class="res-input calc-input">
+                                    <span class="calc-input-addon">gr/día</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="calc-person-wrapper">
+                            <div class="row flex-row" id="persons-distribution">
+                                <div id="p-male" class="calc-bmi-result">
+                                    <img src="https://dietamx.com/wp-content/uploads/2020/12/male2x.png" class="calc-gen-image" alt="Hombre">
+                                </div>
+                                <div id="p-female" class="calc-bmi-result">
+                                    <img src="https://dietamx.com/wp-content/uploads/2020/12/female2x.png" class="calc-gen-image" alt="Mujer">
+                                </div>
+                                <div id="p-pregnant" class="calc-bmi-result">
+                                    <img src="https://dietamx.com/wp-content/uploads/2020/12/pregnant2x.png" class="calc-gen-image" alt="Embarazada">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+    /*
+    	$('.gender-opt').on('change', function () {
+    		console.log((this).value);
+    	});
+    	$('input[type=text]').on('change', function(){
+    		console.log((this).value);
+    	});
+    	$('.af-opt').on('change', function () {
+    		console.log((this).value);
+    	});
+    */
+
+    $('.gender-opt').on('change', function() {
+        var gender = $(this).val();
+        switch (gender) {
+            case "male":
+                $('#p-male').addClass('active').siblings('.calc-bmi-result').removeClass('active');
+                break;
+
+            case "female":
+                $('#p-female').addClass('active').siblings('.calc-bmi-result').removeClass('active');
+                break;
+
+            case "pregnant":
+                $('#p-pregnant').addClass('active').siblings('.calc-bmi-result').removeClass('active');
+                break;
+        }
+    });
+
+
+    $("input").on("change", function(){
+    if($(this).val() != "" && $("input.gender-opt").is(":checked") == true && $("input.checkpoint").is(":checked") == true && $("input.af-opt").is(":checked") == true){
+        $("input.calc-button").removeAttr("disabled");
+    } else {
+        $("input.calc-button").attr("disabled", "disabled");
+    }
+});
+
+
+    function Calculate() {
+
+        var gender = document.querySelector('input[name="genderopt"]:checked').value;
+        var checkgoal = document.querySelector('input[name="checkpoint"]:checked').value;
+        var weight = parseFloat(document.getElementById("weight").value);
+        var height = parseFloat(document.getElementById("height").value);
+        var age = parseFloat(document.getElementById("age").value);
+        var activitylevel = document.querySelector('input[name="af-opt"]:checked').value;
+        var MaintenanceCalories = 0;
+        var mainget = 0;
+
+        switch (gender) {
+            case "male":
+                var val1 = 13.7 * weight;
+                var val2 = 5 * height;
+                var val3 = 6.8 * age;
+                var result = 66 + val1 + val2 - val3;
+                var val4 = activitylevel;
+                //console.log("male");
+                break;
+
+            case "female":
+                var val1 = 9.6 * weight;
+                var val2 = 1.8 * height;
+                var val3 = 4.7 * age;
+                var result = 655 + val1 + val2 - val3;
+                var val4 = activitylevel;
+                //console.log("female");
+                break;
+
+            case "pregnant":
+                var val1 = 9.6 * weight;
+                var val2 = 1.8 * height;
+                var val3 = 4.7 * age;
+                var result = 955 + val1 + val2 - val3;
+                var val4 = activitylevel;
+                //alert("pregnant");
+
+            default:
+                "male"
+                break;
+        }
+
+        switch (val4) {
+            case "10":
+                MaintenanceCalories = result * 1.10;
+                break;
+            case "15":
+                MaintenanceCalories = result * 1.15;
+                break;
+            case "20":
+                MaintenanceCalories = result * 1.20;
+                break;
+            default:
+                "10";
+                break;
+        }
+
+
+        switch (checkgoal) {
+            case "loss":
+                // -500
+                mainget = MaintenanceCalories - 500
+                break;
+            case "gain":
+                // +250
+                mainget = MaintenanceCalories + 250
+                break;
+            default:
+                "loss"
+                break;
+        }
+
+
+        var gbe = result.toFixed(2);
+        var calories = MaintenanceCalories.toFixed(2);
+        var get = mainget.toFixed(2);
+        var eta = Math.round(gbe * 0.10);
+        var protein = weight * 2
+
+
+
+        console.log('Tu ETA es de: ' + eta);
+        $('#eta').val(eta);
+
+        console.log('Tu GBE (Gasto Basal Energético) es de: ' + gbe + ' y debes de consumir al menos (GET): ' + get + '  calorías');
+        $('#GETVal').val(get);
+
+        console.log('Tu consumo de proteina es de: ' + protein);
+        $('#FoodVal').val(protein);
+    }
+    </script>
+</body>
+
+</html>
