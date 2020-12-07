@@ -188,7 +188,7 @@
       border-radius: 0px !important;
       flex: 1;
       margin-right: 10px;
-      text-align: right;
+      text-align: center;
       width: 100%;
       max-width: 160px;
       min-height: 44px;
@@ -206,7 +206,7 @@
     }
 
     .res-input {
-    min-width: 200px;
+    min-width: 224px;
 }
 
     .text-highlight {
@@ -252,9 +252,13 @@
 .subtitle-metric{
 	display: block;
 	clear: both;
-	margin:  0px auto;
+	margin:  8px auto;
 	text-align: center;
 	width: 100%;
+}
+
+.row-distributor {
+    margin-bottom: 24px;
 }
 
 #af-row {
@@ -268,9 +272,22 @@
     margin-right: 8px;
 }
 
+input.calc-button {
+    display: block;
+    clear: both;
+    margin: 24px auto;
+    width: 90%;
+    height: 40px;
+}
+
 input.calc-button:disabled{
 	opacity: 0.4;
 	cursor: not-allowed;
+}
+
+.calc-bmi-result img{
+	width: 100%;
+	height: auto;
 }
 
 
@@ -281,6 +298,60 @@ input.calc-button:disabled{
     #p-pregnant.active{background: url(https://dietamx.com/wp-content/uploads/2020/12/pregnant-filled.png) no-repeat 0px 0px / contain;}
 
 
+
+@media only screen 
+and (min-width : 768px) 
+and (max-width : 1024px) {
+	.calc-person-wrapper {
+    position: relative;
+    bottom: 60px;
+    width: 100%;
+}
+.calc-bmi-result {
+    max-width: 60px;
+    width: 100%;
+}
+}		
+
+@media only screen 
+and (max-width : 767px) {
+
+	.calc-floating-label {
+    position: relative;
+    width: auto;
+    min-width: 100%;
+    text-align: left;
+    float: left;
+    margin-bottom: 6px;
+}
+
+.calc-input{
+
+	max-width: 100%;
+}
+	.calc-distributor {
+	    position: relative;
+	    flex-wrap: wrap;
+	    margin-bottom: 24px;
+	}
+
+	.res-input {
+    min-width: auto;
+    clear: both;
+    width: 100%;
+    max-width: 100%;
+}
+
+.results-wrapper .calc-distributor span.calc-floating-label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+#metrics-distributions{
+	flex-direction: column-reverse;
+}
+}
     </style>
 </head>
 
@@ -288,8 +359,8 @@ input.calc-button:disabled{
     <div class="container">
         <!-- Display principal -->
         <div class="row">
-            <div class="col-12 col-md-12 nopadding">
-                <img src="https://dietamx.com/wp-content/uploads/2020/12/top-banner-calculadora-get.jpg" alt="calculadora" class="img-fluid">
+            <div class="col-12 col-md-12 nopadding" style="margin-bottom: 24px;">
+                <img src="https://dietamx.com/wp-content/uploads/2020/12/top-banner-calculadora-get.jpg" alt="calculadora" class="img-fluid" style="width: 100%;">
             </div>
         </div>
         <!-- Parte de abajo -->
@@ -301,7 +372,7 @@ input.calc-button:disabled{
         <div class="calc-wrapper">
             <form class="calc-form-wrapper">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="calc-distributor" id="gender-row">
                             <label for="male" class="calc-radio-label"> Hombre
                                 <input id="male" class="gender-opt" type="radio" name="genderopt" value="male">
@@ -329,7 +400,7 @@ input.calc-button:disabled{
                     </div>
                 </div>
                 <div class="row" id="metrics-distributions">
-                    <div class="col-sm-12 col-md-5 col-lg-5">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
                         <div class="row-distributor" id="metrics-row">
                             <p class="subtitle-metric">GBE</p>
                             <div class="calc-distributor">
@@ -370,7 +441,7 @@ input.calc-button:disabled{
                         </div>
                         <input type="button" onclick="Calculate()" value="Calcular" class="calc-button" disabled>
                         <div class="results-wrapper">
-                            <div class="row-distributor">
+                            <div class="row-distributor" id="row-results">
                                 <p class="subtitle-metric">ETA</p>
                                 <div class="calc-distributor" id="eta-row">
                                     <span class="calc-floating-label">Resultado</span>
@@ -389,7 +460,7 @@ input.calc-button:disabled{
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-md-5 col-lg-6">
                         <div class="calc-person-wrapper">
                             <div class="row flex-row" id="persons-distribution">
                                 <div id="p-male" class="calc-bmi-result">
@@ -439,13 +510,13 @@ input.calc-button:disabled{
     });
 
 
-    $("input").on("change", function(){
-    if($(this).val() != "" && $("input.gender-opt").is(":checked") == true && $("input.checkpoint").is(":checked") == true && $("input.af-opt").is(":checked") == true){
-        $("input.calc-button").removeAttr("disabled");
-    } else {
-        $("input.calc-button").attr("disabled", "disabled");
-    }
-});
+    $("input").on("change", function() {
+        if ($(this).val() != "" && $("input.gender-opt").is(":checked") == true && $("input.checkpoint").is(":checked") == true && $("input.af-opt").is(":checked") == true) {
+            $("input.calc-button").removeAttr("disabled");
+        } else {
+            $("input.calc-button").attr("disabled", "disabled");
+        }
+    });
 
 
     function Calculate() {
